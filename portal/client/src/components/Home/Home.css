@@ -1,0 +1,7 @@
+.bg {
+    height:100vh;
+    overflow-y: auto;
+    background:#475d62;
+    background-size:cover;
+    position:relative;
+  }
