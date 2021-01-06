@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
 
-import LoginForm from './components/Login/LoginForm';
-import Home from './components/Home/Home';
+import Login from './pages/login';
+import Home from './pages/home';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,10 +16,10 @@ function App() {
       <div className="App">
         <Switch>
           <Route path="/" exact={true}>
-            <LoginForm />
+            <Login />
           </Route>
           <Route path="/login">
-            <LoginForm />
+            <Login />
           </Route>
           <Route path="/home">
             <Home />

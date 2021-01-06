@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { withRouter } from "react-router-dom";
-import './LoginForm.css';
-import AuthService from "../../services/auth.service";
+import React, {useState} from 'react';
+import { withRouter } from 'react-router-dom';
 
-function LoginForm(props) {
+import AuthService from '../../services/auth.service';
+
+import './Login.css';
+
+const Login = (props) => {
     const [state, setState] = useState({
         username: "",
         password: "",
-        successMessage: ""
+        message: ""
     });
 
     const handleChange = (e) => {
@@ -26,36 +28,38 @@ function LoginForm(props) {
         else {
             setState(prevState => ({
                 ...prevState,
-                'successMessage': 'Please enter valid credentials'
+                'message': 'Please enter valid credentials'
             }));
         }
     }
 
     const verifyCredentials = () => {
-        const payload = {
-            "username": state.username,
-            "password": state.password
-        }
-
         AuthService.login(state.username, state.password)
             .then(() => {
                 setState(prevState => ({
                     ...prevState,
-                    'successMessage': 'Login successful. Redirecting to home page...'
+                    'message': 'Login successful. Redirecting to home page...'
                 }));
                 redirectToHome();
             },
             (error) => {                        
                 console.log("error:", error);
+
+                const _message =
+                    (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+
                 setState(prevState => ({
                     ...prevState,
-                    'successMessage': error.response.data.message
+                    'message': _message
                 }));
             });
     }
 
     const redirectToHome = () => {
-        console.log("hello");
         props.history.push('/home');
     }
 
@@ -91,9 +95,9 @@ function LoginForm(props) {
                         Log In
                     </button>
                 </div>
-                <div className="form-group" style={{display: state.successMessage ? 'block' : 'none' }}>
+                <div className="form-group" style={{display: state.message ? 'block' : 'none' }}>
                     <div className="error">
-                        {state.successMessage}
+                        {state.message}
                     </div>                    
                 </div>
             </form>
@@ -101,4 +105,4 @@ function LoginForm(props) {
     );
 }
 
-export default withRouter(LoginForm);
+export default withRouter(Login);

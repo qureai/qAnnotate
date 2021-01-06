@@ -1,5 +1,5 @@
-import axios from "axios";
-import { API_BASE_URL } from "../constants/apiConstants";
+import axios from 'axios';
+import { API_BASE_URL } from '../constants/apiConstants';
 
 const login = (username, password) => {
     const payload = {
