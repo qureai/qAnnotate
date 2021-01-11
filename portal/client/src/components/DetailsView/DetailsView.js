@@ -1,6 +1,7 @@
 import React from 'react';
 
-const DetailsView = () => {
+const DetailsView = ({studyData={}}) => {
+
     return (
         <div className="col-8">
             <form>
@@ -8,20 +9,26 @@ const DetailsView = () => {
                     <button className="btn btn-outline-light mx-2 my-sm-0" id="viewImage" type="button">
                         View Image
                     </button>
-                    <label htmlFor="viewImage" className="col-sm-2 col-form-label">Image 0</label>                                                    
+                    <label htmlFor="viewImage" className="col-sm-2 col-form-label">{studyData.study_id}</label>
                 </div>
                 <div className="form-group text-light my-4">
                     <label>
                         <h4>
                             <small>
-                                Clinical history:
+                                Clinical history: {studyData.clinicalHistory}
                             </small>
                         </h4>
                     </label>
                 </div>
                 <div className="form-group text-light">
                     <div className="form-check">
-                        <input className="form-check-input my-3" type="checkbox" value="" id="intracranialHyperdensity" />
+                        <input 
+                            className="form-check-input my-3" 
+                            type="checkbox" 
+                            value=""
+                            id="intracranialHyperdensity"
+                            checked={studyData.hyperdensities}
+                        />
                         <label className="form-check-label" htmlFor="intracranialHyperdensity">
                             <h3>
                                 <small>
@@ -31,7 +38,7 @@ const DetailsView = () => {
                         </label>
                     </div>
                     <div className="form-check text-light">
-                        <input className="form-check-input my-3" type="checkbox" value="" id="midlineShift" />
+                        <input className="form-check-input my-3" type="checkbox" value={studyData.isMidlineshift} id="midlineShift" />
                         <label className="form-check-label" htmlFor="midlineShift">
                             <h3>
                                 <small>
@@ -52,7 +59,13 @@ const DetailsView = () => {
                         </label>
                     </div>
                     <div className="col">
-                        <input className="form-control" type="text" placeholder="Midline shift (mm)" aria-label="midlineShift" />
+                        <input 
+                            className="form-control" 
+                            type="text"
+                            placeholder="Midline shift (mm)"
+                            aria-label="midlineShift" 
+                            value={studyData.midlineshift}
+                        />
                     </div>                                
                 </div>
                 <div className="form-group text-light">
@@ -60,10 +73,12 @@ const DetailsView = () => {
                     <textarea className="form-control" type="text" placeholder="Please note down remarks." aria-label="remarks" />
                 </div>
                 <div className="form-group text-light">
-                    <label htmlFor="remarks" className="col-form-label white">Last updated: </label>
+                    <label htmlFor="remarks" className="col-form-label white">
+                        Last updated: {studyData.timestamps.modified}
+                    </label>
                 </div>
                 <div className="form-group">
-                    <button className="btn btn-outline-light my-2 my-sm-0" id="viewImage" type="submit">
+                    <button className="btn btn-outline-light my-2 my-sm-0" id="submit" type="submit">
                         Submit
                     </button>
                 </div>

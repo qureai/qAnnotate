@@ -3,12 +3,12 @@ import authHeader from './auth.header';
 import { API_BASE_URL } from '../constants/apiConstants';
 
 // Data service
-const getUserBoard = () => {
+const getStudyData = () => {
     return axios.get(API_BASE_URL + "/user", { headers: authHeader() });
 };
 
 const UserService = {
-    getUserBoard
+    getStudyData
 };
 
 export default UserService;

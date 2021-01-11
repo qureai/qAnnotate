@@ -11,72 +11,46 @@ import DetailsView from '../../components/DetailsView/DetailsView';
 import './Home.css';
 
 function Home(props) {
-    // useEffect(() => {
-    //     axios.get(API_BASE_URL+'/user/me', { headers: { 'token': localStorage.getItem(ACCESS_TOKEN_NAME) }})
-    //     .then(function (response) {
-    //         if(response.status !== 200){
-    //           redirectToLogin()
-    //         }
-    //     })
-    //     .catch(function (error) {
-    //       redirectToLogin()
-    //     });
-    //   })
-
     const [searchKeyword, setSearchKeyword] = useState('');
     const [studyListDefault, setStudyListDefault] = useState();
     const [studyList, setStudyList] = useState();
-
-    const fetchStudyList = () => {
-        // return await fetch('https://restcountries.eu/rest/v2/all')
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         setStudyList(data) 
-        //         setStudyListDefault(data)
-        //     });
-        const data = [{'name':'Image1'},{'name':'Image2'},{'name':'Image3'},{'name':'Image4'}];
-        setStudyList(data);
-        setStudyListDefault(data);
-        return;
-    };
+    const [studyData, setStudyData] = useState({
+        "study_id": '',
+        "timestamps": ''
+    });
 
     const updateStudyList = async (searchKeyword) => {
         const filteredStudyList = studyListDefault.filter(studyId => {
             console.log(searchKeyword);
-            return studyId.name.toLowerCase().includes(searchKeyword.toLowerCase());
+            return studyId.study_id.toLowerCase().includes(searchKeyword.toLowerCase());
         });
         setSearchKeyword(searchKeyword);
         setStudyList(filteredStudyList);
     };
 
     useEffect(() => {
-        fetchStudyList()
-        // UserService.getUserBoard().then(
-        //     (response) => {
-        //         console.log(response);
-        //         setContent(response.data);
-        //     },
-        //     (error) => {
-        //         redirectToLogin()
-        //         // const _content =
-        //         //     (error.response &&
-        //         //     error.response.data &&
-        //         //     error.response.data.message) ||
-        //         //     error.message ||
-        //         //     error.toString();
-
-        //         // setContent(_content);
-        //     }
-        // );
-    }, []);
-
-    const redirectToLogin = () => {
-        props.history.push('/login');
-    }
+        UserService.getStudyData()
+            .then(response => {
+                setStudyList(response.data.data);
+                setStudyListDefault(response.data.data);             
+            },
+            (error) => {
+                console.log("error: ", error);              
+            }
+        );
+    }, []);    
 
     const handleLogout = () => {
         AuthService.logout();
         props.history.push('/login');
+    };
+
+    const handleStudyClick = (_studyId) => {
+        studyList.forEach(studyItem => {
+            if(studyItem._id === _studyId) {
+                setStudyData(studyItem);
+            }
+        });
     };
 
     return(
@@ -90,8 +64,11 @@ function Home(props) {
                 <div className="row">
                     <ListView 
                         studyList={studyList}
+                        handleClick={handleStudyClick}
                     />
-                    <DetailsView />
+                    <DetailsView
+                        studyData={studyData}
+                    />
                 </div>
             </div>            
         </div>
